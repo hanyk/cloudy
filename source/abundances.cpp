@@ -159,6 +159,44 @@ void AbundancesPrt( void )
 	return;
 }
 
+/**ResetAtomicWeights
+ * \brief Calculate atomic weights from the isotopic composition
+ *
+ * The atomic weights used by default are appropriate to a terrestrial isotopic
+ * composition. Recompute using the isotopic composition employed in the run. */
+void ResetAtomicWeights()
+{
+	DEBUG_ENTRY( "ResetAtomicWeights()" );
+
+	for( long nelm = ipHYDROGEN; nelm < LIMELM; nelm++ )
+	{
+		double num = 0.,
+			denom = 0.;
+		for( int niso = 0; niso < abund.IsoAbn[nelm].getNiso(); niso++ )
+		{
+			int Aiso = abund.IsoAbn[nelm].getAiso( niso );
+			num += abund.IsoAbn[nelm].getMass( Aiso ) *
+				abund.IsoAbn[nelm].getAbn( Aiso );
+			denom += abund.IsoAbn[nelm].getAbn( Aiso );
+		}
+
+		ASSERT( denom > 0. );
+
+		double awgt = num / denom;
+
+		enum { DEBUG_LOCAL = false };
+		if( DEBUG_LOCAL )
+		{
+			fprintf( ioQQQ, "%2ld %.4e %.4e %11.4e\n",
+					nelm+1,
+					awgt, dense.AtomicWeight[nelm],
+					awgt / dense.AtomicWeight[nelm] - 1. );
+		}
+
+		dense.AtomicWeight[nelm] = awgt;
+	}
+}
+
 /*AbundancesSet print all abundances, both gas phase and grains */
 void AbundancesSet(void)
 {
@@ -297,6 +335,8 @@ void AbundancesSet(void)
 	}
 
 	SumDensities();
+
+	ResetAtomicWeights();
 
 	/* if stop temp set below default then we are going into cold and possibly 
 	 * molecular gas - check some parameters in this case */

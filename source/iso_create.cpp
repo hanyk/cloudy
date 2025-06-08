@@ -226,8 +226,8 @@ void iso_create()
 
 	/* this is a dummy line, junk it too. */
 	(*TauDummy).Junk();
-	(*TauDummy).AddHiState();
 	(*TauDummy).AddLoState();
+	(*TauDummy).AddHiState();
 	(*TauDummy).AddLine2Stack();
 
 	/********************************************/
