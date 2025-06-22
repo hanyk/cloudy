@@ -141,7 +141,7 @@ t_cpu_i::t_cpu_i()
 	}
 
 	/* set FP environment to trap FP exceptions */
-	enable_traps();
+	//enable_traps();
 
 	ioStdin = stdin;
 	ioQQQ = stdout;

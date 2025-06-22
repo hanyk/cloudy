@@ -121,7 +121,7 @@ void InitDefaultsPreparse( void )
 
 	/* option to read in all input quantities and NOT execute the actual model
 	* only check on input parameters - set by calling cdNoExec */
-	noexec.lgNoExec = false;
+	//noexec.lgNoExec = false;
 
 	/* constant for the extinguish command */
 	rfield.ExtinguishColumnDensity = 0.;
